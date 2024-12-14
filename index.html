@@ -90,7 +90,7 @@
     <div class="volume-controls">
         <label for="global-volume">Global Volume:</label>
         <input type="range" id="global-volume" min="0" max="1" step="0.01" value="1">
-        <input type="number" id="global-volume-number" min="0" max="100" step="1" value="100">
+        <input type="number" id="global-volume-number" min="0" max="100" step="1" value="100">%
     </div>
 
     <div class="playlist-container">
@@ -124,6 +124,8 @@
         let isPlaylistLooping = false;
         const songVolumes = new Map();
         let globalVolume = 1;
+
+        const userKey = `audioPlaylistState_${window.location.hostname}`;
 
         // Sync global volume slider and number input
         globalVolumeSlider.addEventListener('input', (e) => {
@@ -247,56 +249,72 @@
                 const songVolume = songVolumes.get(currentSong) || 1;
                 audioPlayer.src = currentSong;
                 audioPlayer.volume = songVolume * globalVolume;
-                audioPlayer.volume = songVolume * globalVolume;
                 audioPlayer.play();
+
                 audioPlayer.onended = () => {
-                    if (index + 1 < playlistSongs.length) {
-                        playSong(index + 1);
+                    currentSongIndex++;
+                    if (currentSongIndex < playlistSongs.length) {
+                        playSong(currentSongIndex);
                     } else if (isPlaylistLooping) {
-                        playSong(0);
+                        currentSongIndex = 0;
+                        playSong(currentSongIndex);
                     }
                 };
             }
         }
 
-        // Toggle playlist looping
         loopPlaylistButton.addEventListener('click', () => {
             isPlaylistLooping = !isPlaylistLooping;
-            loopPlaylistButton.textContent = isPlaylistLooping ? 'Stop Looping Playlist' : 'Loop Playlist';
+            loopPlaylistButton.textContent = isPlaylistLooping ? 'Stop Loop' : 'Loop Playlist';
+            saveState();
         });
 
-        // Save state to localStorage
         function saveState() {
             const state = {
-                playlistSongs,
                 globalVolume,
+                playlistSongs,
                 songVolumes: Array.from(songVolumes.entries()),
+                isPlaylistLooping
             };
-            localStorage.setItem('audioPlaylistState', JSON.stringify(state));
+            localStorage.setItem(userKey, JSON.stringify(state));
         }
 
-        // Load state from localStorage
         function loadState() {
-            const savedState = localStorage.getItem('audioPlaylistState');
+            const savedState = localStorage.getItem(userKey);
             if (savedState) {
-                const { playlistSongs: savedPlaylist, globalVolume: savedGlobalVolume, songVolumes: savedSongVolumes } = JSON.parse(savedState);
-                playlistSongs = savedPlaylist || [];
-                globalVolume = savedGlobalVolume || 1;
+                const { globalVolume: savedVolume, playlistSongs: savedPlaylist, songVolumes: savedVolumes, isPlaylistLooping: savedLooping } = JSON.parse(savedState);
+                globalVolume = savedVolume;
                 globalVolumeSlider.value = globalVolume;
                 globalVolumeNumber.value = (globalVolume * 100).toFixed(0);
-                savedSongVolumes.forEach(([src, volume]) => songVolumes.set(src, volume));
+                isPlaylistLooping = savedLooping;
+                loopPlaylistButton.textContent = isPlaylistLooping ? 'Stop Loop' : 'Loop Playlist';
 
-                playlistSongs.forEach(src => {
-                    const songItem = Array.from(availableSongs.children).find(item => item.getAttribute('data-src') === src);
-                    if (songItem) {
-                        playlist.appendChild(songItem);
+                playlistSongs = savedPlaylist;
+                playlistSongs.forEach(songSrc => {
+                    const songId = `song-${songSrc.split('/').pop()}`;
+                    const songElement = document.getElementById(songId);
+                    if (songElement) {
+                        playlist.appendChild(songElement);
+                    }
+                });
+
+                savedVolumes.forEach(([src, volume]) => {
+                    songVolumes.set(src, volume);
+                    const songId = `song-${src.split('/').pop()}`;
+                    const songElement = document.getElementById(songId);
+                    if (songElement) {
+                        const volumeSlider = songElement.querySelector('input[type="range"]');
+                        const volumeNumber = songElement.querySelector('input[type="number"]');
+                        if (volumeSlider && volumeNumber) {
+                            volumeSlider.value = volume;
+                            volumeNumber.value = (volume * 100).toFixed(0);
+                        }
                     }
                 });
             }
         }
 
-        // Initialize
-        loadState();
+        window.addEventListener('load', loadState);
     </script>
 </body>
 </html>
