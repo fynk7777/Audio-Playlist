@@ -1,0 +1,117 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.file-input {
+    margin-bottom: 20px;
+}
+
+.playlist-container {
+    display: flex;
+    gap: 20px;
+}
+
+.playlist, .available-songs {
+    width: 45%;
+    min-height: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.playlist.dragover, .available-songs.dragover {
+    background-color: #e0f7fa;
+}
+
+.song-item {
+    padding: 5px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: grab;
+}
+
+.controls {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover {
+    background-color: #0056b3;
+}
+
+.controls input[type="range"] {
+    margin-right: 5px;
+}
+
+.volume-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.volume-controls input[type="number"] {
+    width: 60px;
+}
+
+.song-volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.song-volume input[type="range"] {
+    flex: 1;
+}
+
+.song-volume input[type="number"] {
+    width: 60px;
+}
+
+/* 再生中の曲を強調表示 */
+.song-item.playing {
+    background-color: #f0f8ff;
+    font-weight: bold;
+    border-left: 4px solid #007bff;
+}
+
+/* 再生中の曲情報コンテナ */
+.now-playing-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.now-playing-container div {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* ボタンサイズを大きくして視認性を向上 */
+#previous-song, #play-pause, #next-song {
+    font-size: 18px;
+    padding: 10px 25px;
+}
