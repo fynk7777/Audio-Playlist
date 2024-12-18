@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Play List</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="images/Set.png" type="image/x-icon" id="favicon">
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -24,14 +24,17 @@
         <input type="number" id="global-volume-number" min="0" max="100" step="1" value="10">
     </div>
 
-    <div class="playlist-container">
-        <div class="available-songs" id="available-songs">
+     <div class="playlist-container">
+        <div class="available-songs scrollable-container" id="available-songs">
             <h3>Available Songs</h3>
+            <!-- <div class="resize-handle"></div> -->
         </div>
-        <div class="playlist" id="playlist">
+        <div class="playlist scrollable-container" id="playlist">
             <h3>Playlist</h3>
+            <!-- <div class="resize-handle"></div> -->
         </div>
-    </div>
+    </div> 
+    
 
     <div class="controls">
         <button id="previous-song">Previous</button>
@@ -41,12 +44,13 @@
 
     <div class="controls">
         <button id="play-all">Play All</button>
-        <button id="loop-playlist">Loop Playlist: OFF</button>
+        <button id="loop-playlist">Loop Playlist: ON</button>
     </div>
 
     <audio id="audio-player" controls style="width: 100%; margin-top: 20px;"></audio>
 
     <div id="now-playing" class="now-playing-container"></div>
-
+    <p id="p"></p>
 </body>
 </html>
+

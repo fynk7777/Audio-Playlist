@@ -9,11 +9,11 @@ body {
 
 .playlist-container {
     display: flex;
-    gap: 20px;
+    gap: 10px;
 }
 
 .playlist, .available-songs {
-    width: 45%;
+    width: 50%;
     min-height: 200px;
     border: 1px solid #ccc;
     padding: 10px;
@@ -114,4 +114,47 @@ body {
 #previous-song, #play-pause, #next-song {
     font-size: 18px;
     padding: 10px 25px;
+}
+.drag-placeholder {
+    height: 2px;
+    background-color: red;
+    margin: 4px 0;
+}
+
+.song-item {
+    cursor: grab;
+}
+
+.song-item:active {
+    cursor: grabbing;
+}
+
+.dragover {
+    border-top: 4px solid #008bff;
+}
+
+.scrollable-container {
+    position: relative;
+    overflow-y: auto; /* 縦スクロール可能 */
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: height 0.2s ease; /* 高さ変更時のスムーズなアニメーション */
+}
+
+/* リサイズハンドルをスクロール影響なしに親コンテナの外に固定 */
+.scrollable-container .resize-handle {
+    height: 8px;
+    background-color: #ccc;
+    cursor: ns-resize; /* 上下ドラッグ用カーソル */
+    position: absolute;
+    bottom: 0; /* 親コンテナの下部に固定 */
+    left: 0;
+    right: 0;
+    z-index: 10; /* 前面に表示 */
+}
+
+/* ハンドルの色変更（ホバー時） */
+.scrollable-container:hover .resize-handle {
+    background-color: #aaa;
 }
