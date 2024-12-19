@@ -17,7 +17,7 @@ const outputDevices = document.getElementById('output-devices');
 const modal = document.getElementById('modal');
 const openModalBtn = document.getElementById('open-modal');
 const closeModalBtn = document.getElementById('close-modal');
-const outputReload = document.querySelector('#output-reload');
+const outputReload = document.getElementById('output-reload');
 const outputDevicesContainer = outputDevices.parentElement; // セレクトボックスの親要素
 
 let currentSongIndex = 0;
@@ -868,6 +868,8 @@ modal.addEventListener('click', (event) => {
 
 //------------------------出力デバイスの変更-------------------------------
 const https = window.location.protocol !== 'https:' && window.location.hostname !== 'localhost'
+
+
 if (https) {
     console.warn('HTTP環境ではデバイス選択を非表示にします。');
     outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
@@ -915,11 +917,10 @@ if (https) {
     
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
-
 }
-
-outputReload.addEventListener('c')
-
+outputReload.addEventListener('click', ()=>{
+    alert('testes')
+})
 //---------------------------------------------------------------------
 
 
