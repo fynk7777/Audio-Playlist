@@ -1,3 +1,5 @@
+//-------------------------------------test----------------------------------
+const p = document.querySelector('#p')
 //-----------------------------------------------------------------------------
 const audioFilesInput = document.getElementById('audio-files');
 const availableSongs = document.getElementById('available-songs');
@@ -709,7 +711,6 @@ loopPlaylistButton.addEventListener('click', () => {
 
 //----------------------------キーボード入力に対応させる----------------------------
 const presskey = new Set();
-const p = document.querySelector('#p')
 
 addEventListener('keydown', (e) => {
     if(!inputkey){
@@ -915,8 +916,10 @@ if (https) {
     getAudioOutputDevices();
 
 }
+
 if (!https){
 setInterval(() => {
+    p.textContent = "test"
     getAudioOutputDevices();
 }, 5000);
 }
