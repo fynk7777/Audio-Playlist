@@ -865,7 +865,8 @@ modal.addEventListener('click', (event) => {
 
 
 //------------------------出力デバイスの変更-------------------------------
-if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+const https = window.location.protocol !== 'https:' && window.location.hostname !== 'localhost'
+if (https) {
     console.warn('HTTP環境ではデバイス選択を非表示にします。');
     outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
 } else {
@@ -915,11 +916,12 @@ if (window.location.protocol !== 'https:' && window.location.hostname !== 'local
 
 }
 //---------------------------------------------------------------------
-
+if (!https){
 setInterval(() => {
     alert('test')
     getAudioOutputDevices();
 }, 5000);
+}
 
 //----------------gloval volumeを保存・読み込みする関数------------------
 function saveGlobalVolumeToDB(volume) {
