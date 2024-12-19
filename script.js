@@ -1,5 +1,3 @@
-//-------------------------------------test----------------------------------
-const p = document.querySelector('#p')
 //-----------------------------------------------------------------------------
 const audioFilesInput = document.getElementById('audio-files');
 const availableSongs = document.getElementById('available-songs');
@@ -17,7 +15,6 @@ const outputDevices = document.getElementById('output-devices');
 const modal = document.getElementById('modal');
 const openModalBtn = document.getElementById('open-modal');
 const closeModalBtn = document.getElementById('close-modal');
-const outputReload = document.getElementById('output-reload');
 const outputDevicesContainer = outputDevices.parentElement; // セレクトボックスの親要素
 
 let currentSongIndex = 0;
@@ -712,6 +709,7 @@ loopPlaylistButton.addEventListener('click', () => {
 
 //----------------------------キーボード入力に対応させる----------------------------
 const presskey = new Set();
+const p = document.querySelector('#p')
 
 addEventListener('keydown', (e) => {
     if(!inputkey){
@@ -867,16 +865,10 @@ modal.addEventListener('click', (event) => {
 
 
 //------------------------出力デバイスの変更-------------------------------
-const isHttp = window.location.protocol !== 'https:' && window.location.hostname !== 'localhost';
-
-if (isHttp) {
-    console.warn('HTTP環境ではデバイス選択を非表示にします。');
-    outputDevicesContainer.style.display = 'none';
-} else {
-    // 出力デバイスの一覧を取得
+if (window.location.protocol === 'https:' || window.location.hostname === 'localhost') {
+    // デバイスリストの取得関数（既存のコード）
     async function getAudioOutputDevices() {
         try {
-            // デバイス権限を取得
             await navigator.mediaDevices.getUserMedia({ audio: true });
 
             const devices = await navigator.mediaDevices.enumerateDevices();
@@ -891,41 +883,19 @@ if (isHttp) {
                 outputDevices.appendChild(option);
             });
         } catch (err) {
-            alert('デバイス権限の取得またはデバイス一覧の取得に失敗しました:', err)
-            console.error('デバイス権限の取得またはデバイス一覧の取得に失敗しました:', err);
+            console.error('デバイスリストの取得エラー:', err);
         }
     }
 
-    // 出力デバイスを変更
-    async function changeAudioOutputDevice(deviceId) {
-        if (audioPlayer.setSinkId) {
-            try {
-                await audioPlayer.setSinkId(deviceId);
-                alert(`出力デバイスを変更: ${deviceId}`)
-                console.log(`出力デバイスを変更: ${deviceId}`);
-            } catch (err) {
-                alert(`デバイス変更エラー: ${err.message}`);
-                console.error(`デバイス変更エラー: ${err.message}`);
-            }
-        } else {
-            alert('このブラウザでは出力デバイスの変更がサポートされていません。');
-        }
-    }
-
-    // セレクトボックスの変更時
-    outputDevices.addEventListener('change', (e) => {
-        changeAudioOutputDevice(e.target.value);
-    });
-    
-    // ページロード時にデバイスリストの取得
+    // ページロード時に取得
     getAudioOutputDevices();
+
+    // デバイス変更イベントでリストを更新
+    navigator.mediaDevices.ondevicechange = () => {
+        console.log('デバイス変更を検知');
+        getAudioOutputDevices();
+    };
 }
-
-outputReload.addEventListener('click', ()=>{
-    alert('test ID:e')
-    getAudioOutputDevices();
-    alert('test ID:f')
-})
 //---------------------------------------------------------------------
 
 
