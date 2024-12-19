@@ -867,12 +867,11 @@ modal.addEventListener('click', (event) => {
 
 
 //------------------------出力デバイスの変更-------------------------------
-const https = window.location.protocol !== 'https:' && window.location.hostname !== 'localhost'
+const isHttp = window.location.protocol !== 'https:' && window.location.hostname !== 'localhost';
 
-
-if (https) {
+if (isHttp) {
     console.warn('HTTP環境ではデバイス選択を非表示にします。');
-    outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
+    outputDevicesContainer.style.display = 'none';
 } else {
     // 出力デバイスの一覧を取得
     async function getAudioOutputDevices() {
@@ -902,8 +901,10 @@ if (https) {
         if (audioPlayer.setSinkId) {
             try {
                 await audioPlayer.setSinkId(deviceId);
+                alert(`出力デバイスを変更: ${deviceId}`)
                 console.log(`出力デバイスを変更: ${deviceId}`);
             } catch (err) {
+                alert(`デバイス変更エラー: ${err.message}`);
                 console.error(`デバイス変更エラー: ${err.message}`);
             }
         } else {
@@ -919,10 +920,11 @@ if (https) {
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
 }
+
 outputReload.addEventListener('click', ()=>{
-    alert('test ID:c')
+    alert('test ID:e')
     getAudioOutputDevices();
-    alert('test ID:d')
+    alert('test ID:f')
 })
 //---------------------------------------------------------------------
 
