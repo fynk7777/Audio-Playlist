@@ -910,6 +910,11 @@ if (window.location.protocol !== 'https:' && window.location.hostname !== 'local
         changeAudioOutputDevice(e.target.value);
     });
 
+    //1秒おきにデバイスリストを取得
+    setInterval(() => {
+        getAudioOutputDevices();
+    }, 1000);
+    
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
 }
