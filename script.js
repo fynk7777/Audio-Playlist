@@ -760,6 +760,12 @@ addEventListener('keydown', (e) => {
             // IndexedDBに保存
             localStorage.setItem('globalVolume', globalVolume);
             e.preventDefault();
+        }else if(presskey.has('h')){
+            if (modal.style.display==='none'){
+                modal.style.display = 'flex';
+            }else{
+                modal.style.display = 'none';
+            }
         }
     }
 });

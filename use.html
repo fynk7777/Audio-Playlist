@@ -7,9 +7,8 @@
     <link rel="shortcut icon" href="images/Set.png" type="image/x-icon">
 </head>
 <body>
-    <a href="index.html"><button>Audio Playerに戻る</button></a>
 
-    <h1>Audio-Player</h1>
+    <h1>ヘルプ・詳細</h1>
 
     <p>@fynk7777 for use <a href="http://chatGPT.com">chatGPT</a></p>
 
@@ -32,9 +31,9 @@
                 <p>「IndexedDBの容量の確認」ボタンを押すと、ブラウザのIndexedDBの容量を確認できます。</p>
                 <img src="images/indexedDB.png" alt="IndexedDBの容量確認" border="1">
 
-            <h4>使い方</h4>
-                <p>「使い方を見る」を押したらこのページが表示されます</p>
-                <img src="images/useing.png" alt="使い方" border="1">
+            <h4>ヘルプ・詳細</h4>
+                <p>「ヘルプ・詳細」を押すとヘルプ・詳細が表示されます。</p>
+                <img src="images/help.png" alt="ヘルプ・詳細" border="1">
 
             <h4>グローバル音量の設定</h4>
                 <p>「Global Volume」で全体の音量を調整可能です。（初期設定: 10）</p>
@@ -66,37 +65,41 @@
                 <p>また、再生中の曲の音量や再生位置をスライダーで調整できます。</p>
                 <img src="images/Playing.png" border="1">
 
-            <hr>
+    <hr>
 
-            <h3>ショートカット</h3>
+    <h2>ショートカット</h3>
 
-            <h4>グローバル音量</h4>
+            <h3>グローバル音量</h3>
                 <li>音量を1増やす: <code>ArrowUp</code></li>
                 <li>音量を1減らす: <code>ArrowDown</code></li>
                 <li>音量を10増やす: <code>Shift + ArrowUp</code></li>
                 <li>音量を10減らす: <code>Shift + ArrowDown</code></li>
 
-            <h4>再生中の曲</h4>
+            <h3>再生中の曲の音量</h3>
                 <li>音量を1増やす: <code>Ctrl + ArrowUp</code></li>
                 <li>音量を1減らす: <code>Ctrl + ArrowDown</code></li>
                 <li>音量を10増やす: <code>Ctrl + Shift + ArrowUp</code></li>
                 <li>音量を10減らす: <code>Ctrl + Shift + ArrowDown</code></li>
 
-                <h4>再生操作</h4>
+            <h3>再生操作</h3>
                 <li>前の曲: <code>ArrowLeft</code></li>
                 <li>次の曲: <code>ArrowRight</code></li>
                 <li>再生/一時停止: <code>Space</code></li>
                 <li>プレイリスト再生: <code>Enter</code></li>
                 <li>ループ切り替え: <code>L</code></li>
 
-            <hr>
-
             <h3>その他</h3>
+                <li>ヘルプを表示: <code>H</code></li>
 
-                <li><span style="font-weight: bold;">IndexedDB対応</span>: サイトを読み込み直しても「Global Volume」や曲ごとの音量設定が保持されます。</li>
-                <li><span style="font-weight: bold;">重複アップロード対応</span>: 同じ名前の曲をアップロードすると、以前の音量設定が引き継がれます。</li>
-                <li><span style="font-weight: bold;">容量制限</span>: IndexedDBの容量が上限に達した場合は、ブラウザのキャッシュをクリアしてください。</li>
+    <hr>
 
+    <h2>その他</h3>
+
+        <li><span style="font-weight: bold;">IndexedDB対応</span>: サイトを読み込み直しても「Global Volume」や曲ごとの音量設定が保持されます。</li>
+        <li><span style="font-weight: bold;">重複アップロード対応</span>: 同じ名前の曲をアップロードすると、以前の音量設定が引き継がれます。</li>
+        <li><span style="font-weight: bold;">容量制限</span>: IndexedDBの容量が上限に達した場合は、ブラウザのキャッシュをクリアしてください。</li>
+        
+    <hr>
 
     <h2>現在発見しているバグ</h2>
         <li>PlaylistからAvailable Songsにドラッグで曲を戻した後に、別の曲をドラッグでPlaylistに入れたときに前に戻した曲が戻ってくるというバグ</li>
@@ -112,16 +115,6 @@
         padding-left: 5px;
         padding-right: 5px;
     }
-    button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
 img {
     max-width: 100%;
     height: auto;
