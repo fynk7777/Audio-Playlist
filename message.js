@@ -5,9 +5,9 @@ const message = ""
 // 現在の日時を取得
 const currentDate = new Date();
 
-// 現在の日付が目標日時より前かどうかを比較
-if (message !== ""){
-  if (currentDate < targetDate) {
+
+if (message !== ""){//メッセージが空白のときは実行しない
+  if (currentDate < targetDate) {// 現在の日付が目標日時より前かどうかを比較
     // 目標日時前ならアラートを表示
     alert(message);
   }
