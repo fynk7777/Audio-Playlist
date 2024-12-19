@@ -29,6 +29,10 @@
 「ヘルプ・詳細」を押すとヘルプ・詳細が表示されます。
 ![help](images/help.png)
 
+#### 出力デバイスの変更
+出力デバイスを変更できます。(これはHTTPで実行してないと表示されません)
+![Audio device](images/Audio%20device.png)
+
 #### グローバル音量の設定
 「Global Volume」で全体の音量を調整可能です。（初期設定: 10）  
 ![Global Volume](images/Gloval%20Volume.png)
