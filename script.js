@@ -1,4 +1,5 @@
 //-----------------------------------------------------------------------------
+const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const audioFilesInput = document.getElementById('audio-files');
 const availableSongs = document.getElementById('available-songs');
 const playlist = document.getElementById('playlist');
@@ -866,7 +867,7 @@ modal.addEventListener('click', (event) => {
 
 
 //------------------------出力デバイスの変更-------------------------------
-if (window.location.protocol === 'https:' || window.location.hostname === 'localhost') {
+if (window.location.protocol === "https:") {
     // デバイスリストの取得関数（既存のコード）
     async function getAudioOutputDevices() {
         try {
@@ -896,6 +897,8 @@ if (window.location.protocol === 'https:' || window.location.hostname === 'local
         console.log('デバイス変更を検知');
         getAudioOutputDevices();
     };
+} else {
+    outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
 }
 //---------------------------------------------------------------------
 
