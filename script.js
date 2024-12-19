@@ -909,18 +909,17 @@ if (window.location.protocol !== 'https:' && window.location.hostname !== 'local
     outputDevices.addEventListener('change', (e) => {
         changeAudioOutputDevice(e.target.value);
     });
-
-    //5秒おきにデバイスリストを取得
-    setInterval(() => {
-        alert('test')
-        getAudioOutputDevices();
-    }, 5000);
     
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
+
 }
 //---------------------------------------------------------------------
 
+setInterval(() => {
+    alert('test')
+    getAudioOutputDevices();
+}, 5000);
 
 //----------------gloval volumeを保存・読み込みする関数------------------
 function saveGlobalVolumeToDB(volume) {
