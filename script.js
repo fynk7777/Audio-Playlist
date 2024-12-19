@@ -18,6 +18,7 @@ const modal = document.getElementById('modal');
 const openModalBtn = document.getElementById('open-modal');
 const closeModalBtn = document.getElementById('close-modal');
 const outputDevicesContainer = outputDevices.parentElement; // セレクトボックスの親要素
+const autput_reload = document.getElementById('output-reload')
 
 let currentSongIndex = 0;
 let playlistSongs = [];
@@ -866,26 +867,21 @@ modal.addEventListener('click', (event) => {
 
 
 //------------------------出力デバイスの変更-------------------------------
-const isHttps = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
-
-if (!isHttps) {
+const https = window.location.protocol !== 'https:' && window.location.hostname !== 'localhost'
+if (https) {
     console.warn('HTTP環境ではデバイス選択を非表示にします。');
     outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
 } else {
     // 出力デバイスの一覧を取得
     async function getAudioOutputDevices() {
         try {
+            // デバイス権限を取得
+            await navigator.mediaDevices.getUserMedia({ audio: true });
+
             const devices = await navigator.mediaDevices.enumerateDevices();
             const audioOutputs = devices.filter(device => device.kind === 'audiooutput');
 
             outputDevices.innerHTML = ''; // セレクトボックスをリセット
-
-            if (audioOutputs.length === 0) {
-                const noDeviceOption = document.createElement('option');
-                noDeviceOption.textContent = '利用可能なデバイスがありません';
-                outputDevices.appendChild(noDeviceOption);
-                return;
-            }
 
             audioOutputs.forEach(device => {
                 const option = document.createElement('option');
@@ -893,9 +889,8 @@ if (!isHttps) {
                 option.textContent = device.label || `デバイスID: ${device.deviceId}`;
                 outputDevices.appendChild(option);
             });
-            console.log('デバイスリストが更新されました。');
         } catch (err) {
-            console.error('デバイスリストの取得に失敗しました:', err);
+            console.error('デバイス権限の取得またはデバイス一覧の取得に失敗しました:', err);
         }
     }
 
@@ -917,14 +912,11 @@ if (!isHttps) {
     outputDevices.addEventListener('change', (e) => {
         changeAudioOutputDevice(e.target.value);
     });
-
+    
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
 
-    // デバイス変更イベントを監視して更新
-    navigator.mediaDevices.addEventListener('devicechange', () => {
-        getAudioOutputDevices();
-    });
+    autput_reload.addEventListener('click', getAudioOutputDevices())
 }
 //---------------------------------------------------------------------
 
