@@ -1,7 +1,12 @@
-const message = "2024/12/20 00:00までは、テストをしている可能性があります。ご注意ください。";
-const targetDate = new Date(2024, 11, 20, 0, 0); //年,月(-1),日,時,分
-const now = new Date();
+// 目標日時を指定 (例: 2024年12月25日 15:00)
+const targetDate = new Date(2024, 11, 25, 15, 0, 0); // 月は0から始まるので12月は11
+const message = "テスト中です"
 
-if (message !== "" && now < targetDate) {
+// 現在の日時を取得
+const currentDate = new Date();
+
+// 現在の日付が目標日時より前かどうかを比較
+if (currentDate < targetDate) {
+  // 目標日時前ならアラートを表示
   alert(message);
 }

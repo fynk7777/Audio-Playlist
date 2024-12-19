@@ -916,11 +916,10 @@ if (https) {
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
 
-    autput_reload.addEventListener('click', () => {
-        alert('test')
-        getAudioOutputDevices()
-    })
 }
+autput_reload.addEventListener('click', ()=>{
+    getAudioOutputDevices()
+})
 //---------------------------------------------------------------------
 
 
