@@ -8,6 +8,7 @@
 [>>リンクはこちら<<](https://fynk7777.github.io/Audio-Playlist)
 
 ---
+[使い方](https://github.com/fynk7777/Audio-Playlist#使い方)
 
 ## 使い方
 
