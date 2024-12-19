@@ -42,7 +42,6 @@ document.addEventListener('keydown', (e)=>{
 
 //----------------------IndexDBを初期化する関数-------------------------------
 function initializeDB() {
-    
     const request = indexedDB.open('MusicApp', 1);
 
     request.onupgradeneeded = (e) => {
@@ -54,6 +53,14 @@ function initializeDB() {
 
     request.onsuccess = (e) => {
         db = e.target.result;
+
+        // IndexedDBが初期化された後に音量を取得
+        getGlobalVolumeFromDB((savedVolume) => {
+            globalVolume = savedVolume;
+            globalVolumeSlider.value = globalVolume;
+            globalVolumeNumber.value = (globalVolume * 100).toFixed(0);
+            updateAudioPlayerVolume();
+        });
     };
 
     request.onerror = (e) => {
@@ -107,7 +114,7 @@ globalVolumeSlider.addEventListener('input', (e) => {
     updateAudioPlayerVolume(); // 音量を反映
 
     // IndexedDBに保存
-    localStorage.setItem('globalVolume', globalVolume);
+    saveGlobalVolumeToDB(globalVolume); // IndexedDB に保存
 });
 
 globalVolumeNumber.addEventListener('input', (e) => {
@@ -117,7 +124,7 @@ globalVolumeNumber.addEventListener('input', (e) => {
     updateAudioPlayerVolume(); // 音量を反映
 
     // IndexedDBに保存
-    localStorage.setItem('globalVolume', globalVolume);
+    saveGlobalVolumeToDB(globalVolume); // IndexedDB に保存
 });
 globalVolumeNumber.addEventListener('click', ()=>{
     inputkey = true
@@ -907,3 +914,39 @@ if (window.location.protocol !== 'https:' && window.location.hostname !== 'local
     getAudioOutputDevices();
 }
 //---------------------------------------------------------------------
+
+
+//----------------gloval volumeを保存・読み込みする関数------------------
+function saveGlobalVolumeToDB(volume) {
+    const transaction = db.transaction(['volumes'], 'readwrite');
+    const store = transaction.objectStore('volumes');
+    const data = { songName: 'globalVolume', volume };
+
+    const request = store.put(data);
+    request.onerror = (e) => {
+        console.error('Failed to save global volume to IndexedDB:', e.target.errorCode);
+    };
+}
+
+function getGlobalVolumeFromDB(callback) {
+    const transaction = db.transaction(['volumes'], 'readonly');
+    const store = transaction.objectStore('volumes');
+    const request = store.get('globalVolume');
+
+    request.onsuccess = (e) => {
+        const result = e.target.result;
+        callback(result ? result.volume : 0.1); // デフォルト値 0.1 を使用
+    };
+
+    request.onerror = (e) => {
+        console.error('Failed to fetch global volume from IndexedDB:', e.target.errorCode);
+        callback(0.1);
+    };
+}
+getGlobalVolumeFromDB((savedVolume) => {
+    globalVolume = savedVolume;
+    globalVolumeSlider.value = globalVolume;
+    globalVolumeNumber.value = (globalVolume * 100).toFixed(0);
+    updateAudioPlayerVolume();
+});
+//------------------------------------------------------------------------------
