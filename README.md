@@ -13,8 +13,8 @@
 
 ### 準備
 
-#### 全体画面
-以下は全体画面の説明です。  
+#### 全体の画面
+以下は全体の画面の画像です。  
 ![全体](images/explanation.png)
 
 #### 音声ファイルのアップロード
@@ -24,6 +24,10 @@
 #### IndexedDBの容量確認
 「IndexedDBの容量の確認」ボタンを押すと、ブラウザのIndexedDBの容量を確認できます。  
 ![indexedDB](images/indexedDB.png)
+
+#### 使い方の確認
+「使い方を見る」を押すと使い方のページが表示されます。
+![using](images/useing.png)
 
 #### グローバル音量の設定
 「Global Volume」で全体の音量を調整可能です。（初期設定: 10）  

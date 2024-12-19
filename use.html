@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio-Player使い方</title>
+    <link rel="shortcut icon" href="images/Set.png" type="image/x-icon">
+</head>
+<body>
+    <a href="index.html"><button>Audio Playerに戻る</button></a>
+
+    <h1>Audio-Player</h1>
+
+    <p>@fynk7777 for use <a href="http://chatGPT.com">chatGPT</a></p>
+
+    <p>これは、自分がゲームをするときに裏で音楽を流したいなと思って作ったものです。</p>
+    <p style="font-weight: bold;">自分用に作っているため、バグが起きることもありますがご了承ください。</p>
+
+    <hr>
+
+    <h2>使い方</h2>
+        <h3>準備</h3>
+            <h4>全体像</h4>
+                <p>以下は全体の画面の画像です</p>
+                <img src="images/explanation.png" alt="全体像" border="1">
+
+            <h4>音声ファイルのアップロード</h4>
+                <p>左上の「Upload Audio Files」から音声ファイルをアップロードすると、「Available Songs」に曲が追加されます。</p>
+                <img src="images/Upload.png" alt="音声ファイルのアップロード" border="1">
+
+            <h4>IndexedDBの容量確認</h4>
+                <p>「IndexedDBの容量の確認」ボタンを押すと、ブラウザのIndexedDBの容量を確認できます。</p>
+                <img src="images/indexedDB.png" alt="IndexedDBの容量確認" border="1">
+
+            <h4>使い方</h4>
+                <p>「使い方を見る」を押したらこのページが表示されます</p>
+                <img src="images/useing.png" alt="使い方" border="1">
+
+            <h4>グローバル音量の設定</h4>
+                <p>「Global Volume」で全体の音量を調整可能です。（初期設定: 10）</p>
+                <img src="images/Gloval Volume.png" alt="グローバル音量の設定" border="1">
+
+            <h4>プレイリストへの曲追加</h4>
+                <p>「Available Songs」から曲をドラッグ＆ドロップ、またはダブルクリックで「Playlist」に曲を追加できます。</p>
+                <img src="images/Available,Playlist.png" alt="プレイリストへの曲追加" border="1">
+
+            <h4>曲ごとの音量設定</h4>
+                <p>曲ごとのスライダーで音量を個別に設定できます。（初期設定: 5）</p>
+                <img src="images/Playing.png" alt="曲ごとの音量設定" border="1">
+
+            <hr>
+
+            <h3>曲再生</h3>
+                <p>以下が各ボタンの説明です</p>
+                <img src="images/Buttons.png" alt="ボタンの説明" border="1">
+                <li><span style="font-weight: bold;">Previous</span>: 前の曲</li>
+                <li><span style="font-weight: bold;">Play/Pause</span>: 再生/一時停止</li>
+                <li><span style="font-weight: bold;">Next</span>: 次の曲</li>
+                <li><span style="font-weight: bold;">Play All</span>: プレイリスト内の曲を再生</li>
+                <li><span style="font-weight: bold;">Loop Playlist</span>: プレイリストのループ切り替え（初期設定: ON）</li>
+
+            <h4>再生中の曲</h4>
+                <p>再生中の曲はプレイリスト内で強調表示されます。</p>
+                <img src="images/Playing Song.png" alt="再生中の曲" border="1">
+
+                <p>また、再生中の曲の音量や再生位置をスライダーで調整できます。</p>
+                <img src="images/Playing.png" border="1">
+
+            <hr>
+
+            <h3>ショートカット</h3>
+
+            <h4>グローバル音量</h4>
+                <li>音量を1増やす: <code>ArrowUp</code></li>
+                <li>音量を1減らす: <code>ArrowDown</code></li>
+                <li>音量を10増やす: <code>Shift + ArrowUp</code></li>
+                <li>音量を10減らす: <code>Shift + ArrowDown</code></li>
+
+            <h4>再生中の曲</h4>
+                <li>音量を1増やす: <code>Ctrl + ArrowUp</code></li>
+                <li>音量を1減らす: <code>Ctrl + ArrowDown</code></li>
+                <li>音量を10増やす: <code>Ctrl + Shift + ArrowUp</code></li>
+                <li>音量を10減らす: <code>Ctrl + Shift + ArrowDown</code></li>
+
+                <h4>再生操作</h4>
+                <li>前の曲: <code>ArrowLeft</code></li>
+                <li>次の曲: <code>ArrowRight</code></li>
+                <li>再生/一時停止: <code>Space</code></li>
+                <li>プレイリスト再生: <code>Enter</code></li>
+                <li>ループ切り替え: <code>L</code></li>
+
+            <hr>
+
+            <h3>その他</h3>
+
+                <li><span style="font-weight: bold;">IndexedDB対応</span>: サイトを読み込み直しても「Global Volume」や曲ごとの音量設定が保持されます。</li>
+                <li><span style="font-weight: bold;">重複アップロード対応</span>: 同じ名前の曲をアップロードすると、以前の音量設定が引き継がれます。</li>
+                <li><span style="font-weight: bold;">容量制限</span>: IndexedDBの容量が上限に達した場合は、ブラウザのキャッシュをクリアしてください。</li>
+
+
+    <h2>現在発見しているバグ</h2>
+        <li>PlaylistからAvailable Songsにドラッグで曲を戻した後に、別の曲をドラッグでPlaylistに入れたときに前に戻した曲が戻ってくるというバグ</li>
+        <p>ダブルクリックで移動しいると上記のバグは起きない</p>
+        <li>PlaylistからドラッグでAvailable Songsに曲を移動したとき、曲の見た目が薄くなる</li>
+        <p>ダブルクリックで移動しいると上記のバグは起きない</p>
+</body>
+</html>
+<style>
+    code{
+        background: #b5b5b5;
+        border-radius: 5%;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+</style>
