@@ -18,7 +18,7 @@ const modal = document.getElementById('modal');
 const openModalBtn = document.getElementById('open-modal');
 const closeModalBtn = document.getElementById('close-modal');
 const outputDevicesContainer = outputDevices.parentElement; // セレクトボックスの親要素
-const outputReload = document.getElementById('output-reload')
+const outputReload = document.querySelector('#output-reload');
 
 let currentSongIndex = 0;
 let playlistSongs = [];
@@ -918,9 +918,7 @@ if (https) {
 
 }
 
-outputReload.addEventListener('click', () => {
-    alert('test')
-})
+outputReload.addEventListener('c')
 
 //---------------------------------------------------------------------
 
