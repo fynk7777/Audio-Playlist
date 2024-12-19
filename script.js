@@ -17,8 +17,8 @@ const outputDevices = document.getElementById('output-devices');
 const modal = document.getElementById('modal');
 const openModalBtn = document.getElementById('open-modal');
 const closeModalBtn = document.getElementById('close-modal');
-const outputDevicesContainer = outputDevices.parentElement; // セレクトボックスの親要素
 const outputReload = document.querySelector('#output-reload');
+const outputDevicesContainer = outputDevices.parentElement; // セレクトボックスの親要素
 
 let currentSongIndex = 0;
 let playlistSongs = [];
