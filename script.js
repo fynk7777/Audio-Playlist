@@ -768,10 +768,10 @@ addEventListener('keydown', (e) => {
             localStorage.setItem('globalVolume', globalVolume);
             e.preventDefault();
         }else if(presskey.has('h')){
-            if (modal.style.display==='none'){
-                modal.style.display = 'flex';
-            }else{
+            if (modal.style.display==='flex'){
                 modal.style.display = 'none';
+            }else{
+                modal.style.display = 'flex';
             }
         }else if(presskey.has('control') && presskey.has('u')){
             audioFilesInput.click()
