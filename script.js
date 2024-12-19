@@ -870,27 +870,24 @@ const isHttps = window.location.protocol === 'https:' || window.location.hostnam
 
 if (!isHttps) {
     console.warn('HTTP環境ではデバイス選択を非表示にします。');
-    const outputDevicesContainer = document.getElementById('outputDevicesContainer');
-    if (outputDevicesContainer) {
-        outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
-    }
+    outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
 } else {
     // 出力デバイスの一覧を取得
     async function getAudioOutputDevices() {
         try {
-            // デバイス権限を取得
-            await navigator.mediaDevices.getUserMedia({ audio: true });
+            await navigator.mediaDevices.getUserMedia({ audio: true }); // 権限取得
 
             const devices = await navigator.mediaDevices.enumerateDevices();
             const audioOutputs = devices.filter(device => device.kind === 'audiooutput');
 
-            const outputDevices = document.getElementById('outputDevices');
-            if (!outputDevices) {
-                console.error('outputDevices 要素が見つかりません。');
+            outputDevices.innerHTML = ''; // セレクトボックスをリセット
+
+            if (audioOutputs.length === 0) {
+                const noDeviceOption = document.createElement('option');
+                noDeviceOption.textContent = '利用可能なデバイスがありません';
+                outputDevices.appendChild(noDeviceOption);
                 return;
             }
-
-            outputDevices.innerHTML = ''; // セレクトボックスをリセット
 
             audioOutputs.forEach(device => {
                 const option = document.createElement('option');
@@ -900,18 +897,19 @@ if (!isHttps) {
             });
         } catch (err) {
             console.error('デバイス権限の取得またはデバイス一覧の取得に失敗しました:', err);
+            alert('デバイス情報を取得できませんでした。権限を確認してください。');
         }
     }
 
     // 出力デバイスを変更
     async function changeAudioOutputDevice(deviceId) {
-        const audioPlayer = document.getElementById('audioPlayer');
-        if (audioPlayer && audioPlayer.setSinkId) {
+        if (audioPlayer.setSinkId) {
             try {
                 await audioPlayer.setSinkId(deviceId);
                 console.log(`出力デバイスを変更: ${deviceId}`);
             } catch (err) {
                 console.error(`デバイス変更エラー: ${err.message}`);
+                alert(`デバイス変更エラー: ${err.message}`);
             }
         } else {
             alert('このブラウザでは出力デバイスの変更がサポートされていません。');
@@ -919,21 +917,18 @@ if (!isHttps) {
     }
 
     // セレクトボックスの変更時
-    const outputDevices = document.getElementById('outputDevices');
-    if (outputDevices) {
-        outputDevices.addEventListener('change', (e) => {
-            changeAudioOutputDevice(e.target.value);
-        });
-    }
+    outputDevices.addEventListener('change', (e) => {
+        changeAudioOutputDevice(e.target.value);
+    });
 
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
 
-    // 定期的にデバイスリストを更新
-    setInterval(() => {
-        getAudioOutputDevices();
-    }, 5000);
+    // 必要に応じて定期的にデバイスリストを更新
+    const updateInterval = 5000; // 5秒間隔
+    setInterval(getAudioOutputDevices, updateInterval);
 }
+
 //---------------------------------------------------------------------
 
 
