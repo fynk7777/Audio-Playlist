@@ -1,0 +1,224 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.file-input {
+    margin-bottom: 20px;
+}
+
+.playlist-container {
+    display: flex;
+    gap: 10px;
+}
+
+.playlist, .available-songs {
+    width: 50%;
+    min-height: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.playlist.dragover, .available-songs.dragover {
+    background-color: #e0f7fa;
+}
+
+.song-item {
+    padding: 5px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background-color: #fff;
+    cursor: grab;
+}
+
+.controls {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover {
+    background-color: #0056b3;
+}
+
+.controls input[type="range"] {
+    margin-right: 5px;
+}
+
+.volume-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.volume-controls input[type="number"] {
+    width: 60px;
+}
+
+.song-volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.song-volume input[type="range"] {
+    flex: 1;
+}
+
+.song-volume input[type="number"] {
+    width: 60px;
+}
+
+/* 再生中の曲を強調表示 */
+.song-item.playing {
+    background-color: #f0f8ff;
+    font-weight: bold;
+    border-left: 4px solid #007bff;
+}
+
+/* 再生中の曲情報コンテナ */
+.now-playing-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.now-playing-container div {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+/* ボタンサイズを大きくして視認性を向上 */
+#previous-song, #play-pause, #next-song {
+    font-size: 18px;
+    padding: 10px 25px;
+}
+.drag-placeholder {
+    height: 2px;
+    background-color: red;
+    margin: 4px 0;
+}
+
+.song-item {
+    cursor: grab;
+}
+
+.song-item:active {
+    cursor: grabbing;
+}
+
+.dragover {
+    border-top: 4px solid #008bff;
+}
+
+.scrollable-container {
+    position: relative;
+    overflow-y: auto; /* 縦スクロール可能 */
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: height 0.2s ease; /* 高さ変更時のスムーズなアニメーション */
+}
+
+/* リサイズハンドルをスクロール影響なしに親コンテナの外に固定 */
+.scrollable-container .resize-handle {
+    height: 8px;
+    background-color: #ccc;
+    cursor: ns-resize; /* 上下ドラッグ用カーソル */
+    position: absolute;
+    bottom: 0; /* 親コンテナの下部に固定 */
+    left: 0;
+    right: 0;
+    z-index: 10; /* 前面に表示 */
+}
+
+/* ハンドルの色変更（ホバー時） */
+.scrollable-container:hover .resize-handle {
+    background-color: #aaa;
+}
+
+
+
+
+
+/* モーダル全体のスタイル */
+.modal {
+    display: none; /* 初期状態は非表示 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 背景の半透明 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* モーダルコンテンツのスタイル */
+.modal-content {
+    background-color: white;
+    padding: 0;
+    border-radius: 10px;
+    width: 80%;
+    height: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 閉じるボタンのスタイル */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.close-btn:hover {
+    background-color: darkred;
+}
+
+/* iframeのサイズ調整 */
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* use.html内の画像サイズ調整 */
+iframe {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
