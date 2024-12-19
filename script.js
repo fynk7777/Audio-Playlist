@@ -915,13 +915,13 @@ if (https) {
     getAudioOutputDevices();
 
 }
-//---------------------------------------------------------------------
 if (!https){
 setInterval(() => {
-    alert('test')
     getAudioOutputDevices();
 }, 5000);
 }
+//---------------------------------------------------------------------
+
 
 //----------------gloval volumeを保存・読み込みする関数------------------
 function saveGlobalVolumeToDB(volume) {
