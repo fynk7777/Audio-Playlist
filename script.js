@@ -912,6 +912,7 @@ if (window.location.protocol !== 'https:' && window.location.hostname !== 'local
 
     //5秒おきにデバイスリストを取得
     setInterval(() => {
+        alert('test')
         getAudioOutputDevices();
     }, 5000);
     
