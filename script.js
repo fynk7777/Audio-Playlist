@@ -875,8 +875,6 @@ if (!isHttps) {
     // 出力デバイスの一覧を取得
     async function getAudioOutputDevices() {
         try {
-            await navigator.mediaDevices.getUserMedia({ audio: true }); // 権限取得
-
             const devices = await navigator.mediaDevices.enumerateDevices();
             const audioOutputs = devices.filter(device => device.kind === 'audiooutput');
 
@@ -895,9 +893,9 @@ if (!isHttps) {
                 option.textContent = device.label || `デバイスID: ${device.deviceId}`;
                 outputDevices.appendChild(option);
             });
+            console.log('デバイスリストが更新されました。');
         } catch (err) {
-            console.error('デバイス権限の取得またはデバイス一覧の取得に失敗しました:', err);
-            alert('デバイス情報を取得できませんでした。権限を確認してください。');
+            console.error('デバイスリストの取得に失敗しました:', err);
         }
     }
 
@@ -909,7 +907,6 @@ if (!isHttps) {
                 console.log(`出力デバイスを変更: ${deviceId}`);
             } catch (err) {
                 console.error(`デバイス変更エラー: ${err.message}`);
-                alert(`デバイス変更エラー: ${err.message}`);
             }
         } else {
             alert('このブラウザでは出力デバイスの変更がサポートされていません。');
@@ -924,11 +921,11 @@ if (!isHttps) {
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
 
-    // 必要に応じて定期的にデバイスリストを更新
-    const updateInterval = 5000; // 5秒間隔
-    setInterval(getAudioOutputDevices, updateInterval);
+    // デバイス変更イベントを監視して更新
+    navigator.mediaDevices.addEventListener('devicechange', () => {
+        getAudioOutputDevices();
+    });
 }
-
 //---------------------------------------------------------------------
 
 
