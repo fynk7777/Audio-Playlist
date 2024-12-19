@@ -866,10 +866,14 @@ modal.addEventListener('click', (event) => {
 
 
 //------------------------出力デバイスの変更-------------------------------
-const https = window.location.protocol !== 'https:' && window.location.hostname !== 'localhost'
-if (https) {
+const isHttps = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+
+if (!isHttps) {
     console.warn('HTTP環境ではデバイス選択を非表示にします。');
-    outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
+    const outputDevicesContainer = document.getElementById('outputDevicesContainer');
+    if (outputDevicesContainer) {
+        outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
+    }
 } else {
     // 出力デバイスの一覧を取得
     async function getAudioOutputDevices() {
@@ -879,6 +883,12 @@ if (https) {
 
             const devices = await navigator.mediaDevices.enumerateDevices();
             const audioOutputs = devices.filter(device => device.kind === 'audiooutput');
+
+            const outputDevices = document.getElementById('outputDevices');
+            if (!outputDevices) {
+                console.error('outputDevices 要素が見つかりません。');
+                return;
+            }
 
             outputDevices.innerHTML = ''; // セレクトボックスをリセット
 
@@ -895,7 +905,8 @@ if (https) {
 
     // 出力デバイスを変更
     async function changeAudioOutputDevice(deviceId) {
-        if (audioPlayer.setSinkId) {
+        const audioPlayer = document.getElementById('audioPlayer');
+        if (audioPlayer && audioPlayer.setSinkId) {
             try {
                 await audioPlayer.setSinkId(deviceId);
                 console.log(`出力デバイスを変更: ${deviceId}`);
@@ -908,20 +919,20 @@ if (https) {
     }
 
     // セレクトボックスの変更時
-    outputDevices.addEventListener('change', (e) => {
-        changeAudioOutputDevice(e.target.value);
-    });
-    
+    const outputDevices = document.getElementById('outputDevices');
+    if (outputDevices) {
+        outputDevices.addEventListener('change', (e) => {
+            changeAudioOutputDevice(e.target.value);
+        });
+    }
+
     // ページロード時にデバイスリストの取得
     getAudioOutputDevices();
 
-}
-
-if (!https){
-setInterval(() => {
-    p.textContent = "test"
-    getAudioOutputDevices();
-}, 5000);
+    // 定期的にデバイスリストを更新
+    setInterval(() => {
+        getAudioOutputDevices();
+    }, 5000);
 }
 //---------------------------------------------------------------------
 
