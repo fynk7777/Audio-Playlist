@@ -892,6 +892,7 @@ if (https) {
                 outputDevices.appendChild(option);
             });
         } catch (err) {
+            alert('デバイス権限の取得またはデバイス一覧の取得に失敗しました:', err)
             console.error('デバイス権限の取得またはデバイス一覧の取得に失敗しました:', err);
         }
     }
