@@ -919,7 +919,9 @@ if (https) {
     getAudioOutputDevices();
 }
 outputReload.addEventListener('click', ()=>{
-    alert('testes')
+    alert('test ID:a')
+    getAudioOutputDevices();
+    alert('test ID:b')
 })
 //---------------------------------------------------------------------
 
