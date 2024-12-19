@@ -10,7 +10,7 @@ const globalVolumeNumber = document.getElementById('global-volume-number');
 const nowPlayingContainer = document.getElementById('now-playing'); // 再生中の曲名と音量表示用
 const playPauseButton = document.getElementById('play-pause');
 const favicon = document.getElementById('favicon')
-document.getElementById('check-storage-button').addEventListener('click', showIndexedDBUsage);
+const storage_check = document.getElementById('check-storage-button')
 
 //-
 const modal = document.getElementById('modal');
@@ -657,6 +657,7 @@ function resetIndexedDB(databaseName) {
 
 
 //---------------------------------------容量を表示する関数---------------------------------------
+storage_check.addEventListener('click', showIndexedDBUsage);
 async function showIndexedDBUsage() {
     if ('storage' in navigator && 'estimate' in navigator.storage) {
         try {
@@ -766,6 +767,12 @@ addEventListener('keydown', (e) => {
             }else{
                 modal.style.display = 'none';
             }
+        }else if(presskey.has('control') && presskey.has('u')){
+            audioFilesInput.click()
+            e.preventDefault();
+        }else if(presskey.has('control') && presskey.has('i')){
+            showIndexedDBUsage()
+            e.preventDefault()
         }
     }
 });
