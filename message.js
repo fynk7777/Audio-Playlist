@@ -1,6 +1,6 @@
 // 目標日時を指定 (例: 2024年12月25日 15:00)
 const targetDate = new Date(2024, 11, 25, 15, 0, 0); // 月は0から始まるので12月は11
-const message = "テスト中です"
+const message = "テスト中です　ID:1"
 
 // 現在の日時を取得
 const currentDate = new Date();
