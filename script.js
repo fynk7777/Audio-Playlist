@@ -796,7 +796,8 @@ document.addEventListener('keyup', (e) => {
 
 //---------------------titleとfaviconの変更------------------------------
 audioPlayer.addEventListener('play', () => {
-    favicon.href = "images/favicon.png";
+    const timestamp = new Date().getTime(); // 現在時刻をクエリパラメータに追加
+    favicon.href = `images/favicon.png?v={timestamp}`;
     let lastTime = Date.now();
     let count = 0;
     document.title = "再生中";
@@ -840,7 +841,7 @@ audioPlayer.addEventListener('pause', () => {
 
 window.addEventListener('beforeunload', () => {
       favicon.href = 'images/Set.png';
-    });
+});
 //-------------------------------------------------------------------------
 
 
