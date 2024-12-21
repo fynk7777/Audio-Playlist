@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audio-Player使い方</title>
     <link rel="shortcut icon" href="images/Set.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // 親ページからテーマ情報を受信
+        window.addEventListener('message', (event) => {
+            if (event.data === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        });
+    </script>
 </head>
 <body>
 
@@ -73,7 +84,7 @@
 
     <hr>
 
-    <h2>ショートカット</h3>
+    <h2>ショートカット</h2>
 
             <h3>グローバル音量</h3>
                 <li>音量を1増やす: <code>ArrowUp</code></li>
@@ -101,7 +112,7 @@
 
     <hr>
 
-    <h2>その他</h3>
+    <h2>その他</h2>
 
         <li><span style="font-weight: bold;">IndexedDB対応</span>: サイトを読み込み直しても「Global Volume」や曲ごとの音量設定が保持されます。</li>
         <li><span style="font-weight: bold;">重複アップロード対応</span>: 同じ名前の曲をアップロードすると、以前の音量設定が引き継がれます。</li>
@@ -114,6 +125,26 @@
         <p>ダブルクリックで移動しいると上記のバグは起きない</p>
         <li>PlaylistからドラッグでAvailable Songsに曲を移動したとき、曲の見た目が薄くなる</li>
         <p>ダブルクリックで移動しいると上記のバグは起きない</p>
+
+    <hr>
+
+    <h2>機能・バージョン履歴</h2>
+    <div class="ver">
+        <h3>現在のバージョン : 1.0</h3>
+        <label for="ver1"><li id="ver1">1.0 : サイトを公開</li></label>
+            <p>再生/一時停止ボタンを追加</p>
+            <p>次の曲ボタンを追加</p>
+            <p>前の曲ボタンを追加</p>
+            <p>音楽の情報を保存する機能を追加</p>
+            <p>曲ごとの音量を調整する機能を追加</p>
+            <p>再生中の曲の音量を調整する機能を追加</p>
+            <p>ダブルクリックでプレイリストに曲を追加</p>
+            <p>IndexedDBの容量確認</p>
+            <p>タイトル、ファビコンが再生中の曲に合わせて変わるように変更</p>
+            <p>キーボードショートカットを追加</p>
+            <p>ヘルプを追加</p>
+            <p>出力デバイスの変更をする機能を追加</p>
+    </div>
 </body>
 </html>
 <style>
@@ -123,9 +154,13 @@
         padding-left: 5px;
         padding-right: 5px;
     }
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    .ver p{
+        padding-left: 2rem;
+        margin: 0;
+    }
 </style>
