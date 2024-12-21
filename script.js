@@ -822,7 +822,7 @@ audioPlayer.addEventListener("play", () => {
     if (audioPlayer.paused) return; // 再生が停止したら終了
     if (now - lastTime >= 3000) {
       count++;
-      document.title = count % 2 === 0 ? "再生中" : "音楽をお楽しみください";
+      document.title = count % 2 === 0 ? "再生中" : songtitle;
       lastTime = now;
     }
     setTimeout(updateTitle, 100);
@@ -841,7 +841,7 @@ audioPlayer.addEventListener("pause", () => {
     if (!audioPlayer.paused) return; // 再生が開始したら終了
     if (now - lastTime >= 3000) {
       count++;
-      document.title = count % 2 === 0 ? "一時停止中" : "音楽をお楽しみください";
+      document.title = count % 2 === 0 ? "一時停止中" : songtitle;
       lastTime = now;
     }
     setTimeout(updateTitle, 100);
