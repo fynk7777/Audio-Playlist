@@ -817,7 +817,8 @@ audioPlayer.addEventListener('play', () => {
 });
 
 audioPlayer.addEventListener('pause', () => {
-    favicon.href = "images/pause.png";
+    const timestamp = new Date().getTime(); // 現在時刻をクエリパラメータに追加
+    favicon.href = `images/pause.png?v={timestamp}`;
     let lastTime = Date.now();
     let count = 0;
     document.title = "一時停止中";
@@ -837,6 +838,9 @@ audioPlayer.addEventListener('pause', () => {
     updateTitle();
 });
 
+window.addEventListener('beforeunload', () => {
+      favicon.href = 'images/Set.png';
+    });
 //-------------------------------------------------------------------------
 
 
