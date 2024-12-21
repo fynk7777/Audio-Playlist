@@ -812,7 +812,9 @@ function setFavicon(base64Data) {
 
 // タイトルとファビコンを動的に変更
 audioPlayer.addEventListener("play", () => {
-  setFavicon(favicons.play); // 再生中アイコンに変更
+  const faviconURL = favicons.play
+  const timestamp = new Date().getTime(); // 現在時刻をクエリパラメータに追加 
+  setFavicon(`${faviconURL}?v={timestamp}`); // 一時停止アイコンに変更
   let lastTime = Date.now();
   let count = 0;
   document.title = "再生中";
@@ -831,10 +833,12 @@ audioPlayer.addEventListener("play", () => {
 });
 
 audioPlayer.addEventListener("pause", () => {
-  setFavicon(favicons.pause); // 一時停止アイコンに変更
-  let lastTime = Date.now();
-  let count = 0;
-  document.title = "一時停止中";
+      const faviconURL = favicons.pause
+      const timestamp = new Date().getTime(); // 現在時刻をクエリパラメータに追加 
+      setFavicon(`${faviconURL}?v={timestamp}`); // 一時停止アイコンに変更
+      let lastTime = Date.now();
+      let count = 0;
+      document.title = "一時停止中";
 
   function updateTitle() {
     const now = Date.now();
