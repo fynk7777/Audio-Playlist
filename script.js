@@ -810,9 +810,6 @@ function setFavicon(base64Data) {
   }
 }
 
-// 再生プレーヤー（audio要素）
-const audioPlayer = document.getElementById("audioPlayer"); // 適切なIDを設定してください
-
 // 再生中イベント
 audioPlayer.addEventListener("play", () => {
   setFavicon(favicons.play); // 再生中アイコンに変更
