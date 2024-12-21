@@ -810,49 +810,45 @@ function setFavicon(base64Data) {
   }
 }
 
-// タイトルとファビコンを動的に変更
+// 再生プレーヤー（audio要素）
+const audioPlayer = document.getElementById("audioPlayer"); // 適切なIDを設定してください
+
+// 再生中イベント
 audioPlayer.addEventListener("play", () => {
-  const faviconURL = favicons.play
-  const timestamp = new Date().getTime(); // 現在時刻をクエリパラメータに追加 
-  setFavicon(`${faviconURL}?v={timestamp}`); // 一時停止アイコンに変更
+  setFavicon(favicons.play); // 再生中アイコンに変更
+  document.title = "再生中";
+  updateTitle("再生中");
+});
+
+// 一時停止イベント
+audioPlayer.addEventListener("pause", () => {
+  setFavicon(favicons.pause); // 一時停止アイコンに変更
+  document.title = "一時停止中";
+  updateTitle("一時停止中");
+});
+
+// タイトルを動的に変更する関数
+function updateTitle(initialTitle) {
   let lastTime = Date.now();
   let count = 0;
-  document.title = "再生中";
 
-  function updateTitle() {
+  function toggleTitle() {
     const now = Date.now();
-    if (audioPlayer.paused) return; // 再生が停止したら終了
+    if (audioPlayer.paused && initialTitle === "再生中") return; // 再生停止中は終了
+    if (!audioPlayer.paused && initialTitle === "一時停止中") return; // 再生中は終了
+
     if (now - lastTime >= 3000) {
       count++;
-      document.title = count % 2 === 0 ? "再生中" : songtitle;
+      document.title = count % 2 === 0 ? initialTitle : songtitle;
       lastTime = now;
     }
-    setTimeout(updateTitle, 100);
+    setTimeout(toggleTitle, 100);
   }
-  updateTitle();
-});
 
-audioPlayer.addEventListener("pause", () => {
-      const faviconURL = favicons.pause
-      const timestamp = new Date().getTime(); // 現在時刻をクエリパラメータに追加 
-      setFavicon(`${faviconURL}?v={timestamp}`); // 一時停止アイコンに変更
-      let lastTime = Date.now();
-      let count = 0;
-      document.title = "一時停止中";
+  toggleTitle();
+}
 
-  function updateTitle() {
-    const now = Date.now();
-    if (!audioPlayer.paused) return; // 再生が開始したら終了
-    if (now - lastTime >= 3000) {
-      count++;
-      document.title = count % 2 === 0 ? "一時停止中" : songtitle;
-      lastTime = now;
-    }
-    setTimeout(updateTitle, 100);
-  }
-  updateTitle();
-});
-
+// ページ離脱時に初期ファビコンに戻す
 window.addEventListener("beforeunload", () => {
   setFavicon(favicons.set); // 初期アイコンに戻す
 });
