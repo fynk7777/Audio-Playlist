@@ -868,7 +868,8 @@ modal.addEventListener('click', (event) => {
 
 //------------------------出力デバイスの変更-------------------------------
 if (window.location.protocol === "https:") {
-    // デバイスリストの取得関数（既存のコード）
+
+    // デバイスリストの取得関数
     async function getAudioOutputDevices() {
         try {
             await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -876,7 +877,7 @@ if (window.location.protocol === "https:") {
             const devices = await navigator.mediaDevices.enumerateDevices();
             const audioOutputs = devices.filter(device => device.kind === 'audiooutput');
 
-            outputDevices.innerHTML = ''; // セレクトボックスをリセット
+            outputDevices.innerHTML = '<option value="">デバイスを選択...</option>'; // セレクトボックスをリセット
 
             audioOutputs.forEach(device => {
                 const option = document.createElement('option');
@@ -889,6 +890,22 @@ if (window.location.protocol === "https:") {
         }
     }
 
+    // デバイス変更イベント
+    outputDevices.addEventListener('change', async () => {
+        const selectedDeviceId = outputDevices.value;
+
+        if (audioPlayer.setSinkId) {
+            try {
+                await audioPlayer.setSinkId(selectedDeviceId);
+                console.log(`出力先を変更: ${selectedDeviceId}`);
+            } catch (err) {
+                console.error('出力先の変更エラー:', err);
+            }
+        } else {
+            console.warn('このブラウザでは setSinkId がサポートされていません。');
+        }
+    });
+
     // ページロード時に取得
     getAudioOutputDevices();
 
@@ -898,7 +915,8 @@ if (window.location.protocol === "https:") {
         getAudioOutputDevices();
     };
 } else {
-    outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
+    document.getElementById('outputDevicesContainer').style.display = 'none'; // セレクトボックスを非表示
+    console.warn('この機能は HTTPS 接続が必要です。');
 }
 //---------------------------------------------------------------------
 
