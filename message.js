@@ -1,7 +1,7 @@
 // 目標日時を指定 (例: 2024年12月25日 15:00)  // 月は0から始まるので12月は11
 const after = new Date(2020, 11, 24, 0, 0,0)//2024年12月24日 00:00
 const befor = new Date(2024, 11, 21, 20, 0, 0);//2024年12月25 00:00
-const message = "テストをしている可能性があります。"
+const message = ""
 
 // 現在の日時を取得
 const currentDate = new Date();
