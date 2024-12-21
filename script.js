@@ -810,42 +810,45 @@ function setFavicon(base64Data) {
   }
 }
 
-// 再生中イベント
+// タイトルとファビコンを動的に変更
 audioPlayer.addEventListener("play", () => {
   setFavicon(favicons.play); // 再生中アイコンに変更
-  document.title = "再生中";
-  updateTitle("再生中");
-});
-
-// 一時停止イベント
-audioPlayer.addEventListener("pause", () => {
-  setFavicon(favicons.pause); // 一時停止アイコンに変更
-  document.title = "一時停止中";
-  updateTitle("一時停止中");
-});
-
-// タイトルを動的に変更する関数
-function updateTitle(initialTitle) {
   let lastTime = Date.now();
   let count = 0;
+  document.title = "再生中";
 
-  function toggleTitle() {
+  function updateTitle() {
     const now = Date.now();
-    if (audioPlayer.paused && initialTitle === "再生中") return; // 再生停止中は終了
-    if (!audioPlayer.paused && initialTitle === "一時停止中") return; // 再生中は終了
-
+    if (audioPlayer.paused) return; // 再生が停止したら終了
     if (now - lastTime >= 3000) {
       count++;
-      document.title = count % 2 === 0 ? initialTitle : songtitle;
+      document.title = count % 2 === 0 ? "再生中" : songtitle;
       lastTime = now;
     }
-    setTimeout(toggleTitle, 100);
+    setTimeout(updateTitle, 100);
   }
+  updateTitle();
+});
 
-  toggleTitle();
-}
+audioPlayer.addEventListener("pause", () => {
+  setFavicon(favicons.pause); // 一時停止アイコンに変更
+  let lastTime = Date.now();
+  let count = 0;
+  document.title = "一時停止中";
 
-// ページ離脱時に初期ファビコンに戻す
+  function updateTitle() {
+    const now = Date.now();
+    if (!audioPlayer.paused) return; // 再生が開始したら終了
+    if (now - lastTime >= 3000) {
+      count++;
+      document.title = count % 2 === 0 ? "一時停止中" : songtitle;
+      lastTime = now;
+    }
+    setTimeout(updateTitle, 100);
+  }
+  updateTitle();
+});
+
 window.addEventListener("beforeunload", () => {
   setFavicon(favicons.set); // 初期アイコンに戻す
 });
@@ -927,7 +930,7 @@ if (window.location.protocol === "https:") {
         getAudioOutputDevices();
     };
 } else {
-    document.getElementById('outputDevicesContainer').style.display = 'none'; // セレクトボックスを非表示
+    outputDevicesContainer.style.display = 'none'; // セレクトボックスを非表示
     console.warn('この機能は HTTPS 接続が必要です。');
 }
 //---------------------------------------------------------------------
