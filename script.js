@@ -811,8 +811,6 @@ function setFavicon(base64Data) {
 }
 
 // タイトルとファビコンを動的に変更
-const audioPlayer = document.getElementById("audioPlayer");
-
 audioPlayer.addEventListener("play", () => {
   setFavicon(favicons.play); // 再生中アイコンに変更
   let lastTime = Date.now();
