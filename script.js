@@ -877,7 +877,7 @@ if (window.location.protocol === "https:") {
             const devices = await navigator.mediaDevices.enumerateDevices();
             const audioOutputs = devices.filter(device => device.kind === 'audiooutput');
 
-            outputDevices.innerHTML = '<option value="">デバイスを選択...</option>'; // セレクトボックスをリセット
+            outputDevices.innerHTML = ''; // セレクトボックスをリセット
 
             audioOutputs.forEach(device => {
                 const option = document.createElement('option');
