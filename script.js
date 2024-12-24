@@ -260,15 +260,6 @@ function updateAudioPlayerVolume() {
 
 //------------------ドラッグアンドドロップの関数--------------------------
 function enableDragAndDrop(container) {
-    container.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        container.classList.add('dragover');
-    });
-
-    container.addEventListener('dragleave', () => {
-        container.classList.remove('dragover');
-    });
-
     container.addEventListener('dragstart', (e) => {
         if (e.target.classList.contains('song-item')) {
             e.target.style.opacity = '0.5'; // ドラッグ中の透明度
@@ -280,48 +271,33 @@ function enableDragAndDrop(container) {
             e.target.style.opacity = '1'; // 元に戻す
         }
     });
+    container.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        container.classList.add('dragover');
+    });
+
+    container.addEventListener('dragleave', () => {
+        container.classList.remove('dragover');
+    });
 
     container.addEventListener('drop', (e) => {
         e.preventDefault();
         container.classList.remove('dragover');
-    
+
         const songId = e.dataTransfer.getData('text');
         const songElement = document.getElementById(songId);
 
-
-        if (!songElement) return; // 無効な要素は無視
-    
-        const songSrc = songElement.getAttribute('data-src');
-    
-        if (container === playlist) {
-            // プレイリストに追加
-            if (!playlist.contains(songElement)) {
-                playlist.appendChild(songElement);
-                // `playlistSongs`を更新
-                if (!playlistSongs.includes(songSrc)) {
-                    playlistSongs.push(songSrc);
-                }
-            }
-        } else if (container === availableSongs) {
-            // Available Songs に戻す
-            if (!availableSongs.contains(songElement)) {
-                availableSongs.appendChild(songElement);
-    
-                // `playlistSongs`から削除
-                playlistSongs = playlistSongs.filter(src => src !== songSrc);
-            }
+        if (container === playlist && !playlist.contains(songElement)) {
+            playlist.appendChild(songElement);
+            playlistSongs.push(songElement.getAttribute('data-src'));
+            updatePlaylistOrder(); // プレイリストへの追加後に更新
+        } else if (container === availableSongs && !availableSongs.contains(songElement)) {
+            availableSongs.appendChild(songElement);
+            playlistSongs = playlistSongs.filter(src => src !== songElement.getAttribute('data-src'));
+            updatePlaylistOrder(); // プレイリストから削除後に更新
         }
-    
-        // 配列の正確な状態を強制的に再構築
-        playlistSongs = Array.from(playlist.children)
-            .filter(item => item.classList.contains('song-item'))
-            .map(item => item.getAttribute('data-src'));
-        
-        
-        updatePlaylistOrder();
     });
 }
-
 //--------------------------------------------------------------------------------
 
 
@@ -459,7 +435,6 @@ audioFilesInput.addEventListener('change', () => {
                 });
                 volumeSlider.addEventListener('focus', ()=>{
                     focusslider = true
-                    songItem.draggable = false;
                 })
                 volumeSlider.addEventListener('blur', ()=>{
                     focusslider = false
@@ -471,7 +446,6 @@ audioFilesInput.addEventListener('change', () => {
                 });
                 volumeNumber.addEventListener('focus', () => {
                     focusslider = true
-                    songItem.draggable = false;
                 })
                 volumeNumber.addEventListener('blur', () => {
                     dragging = false;
@@ -579,9 +553,6 @@ function playSong(index) {
         const nowPlayingSlider = nowPlayingVolumeControls.querySelector('input[type="range"]');
         const nowPlayingNumber = nowPlayingVolumeControls.querySelector('input[type="number"]');
 
-        updateMediaSessionMetadata(); // 曲が切り替わったらメタデータを更新
-
-    
         nowPlayingSlider.addEventListener('input', (e) => {
             const value = parseFloat(e.target.value);
             nowPlayingNumber.value = (value * 100).toFixed(0);
@@ -589,11 +560,10 @@ function playSong(index) {
             updateAudioPlayerVolume();
 
             // IndexedDBに保存
-            saveVolumeToDB(currentSongElement.textContent,((value * 100).toFixed(1)) / 100);
+            saveVolumeToDB(songtitle,((value * 100).toFixed(1)) / 100);
 
             // プレイリスト内の対応するスライダーを更新
             syncPlaylistVolumeControls(currentSong, value);
-
         });
 
         nowPlayingNumber.addEventListener('input', (e) => {
@@ -603,7 +573,7 @@ function playSong(index) {
             updateAudioPlayerVolume();
 
             // IndexedDBに保存
-            saveVolumeToDB(currentSongElement.textContent, value / 100);
+            saveVolumeToDB(songtitle, value / 100);
 
             // プレイリスト内の対応するスライダーを更新
             syncPlaylistVolumeControls(currentSong, value);
@@ -623,7 +593,7 @@ function playSong(index) {
                     updateAudioPlayerVolume();
         
                     // IndexedDBに保存
-                    saveVolumeToDB(currentSong, value);
+                    saveVolumeToDB(songtitle, value);
         
                     // プレイリスト内のスライダーを更新
                     syncPlaylistVolumeControls(currentSong, value);
@@ -641,7 +611,7 @@ function playSong(index) {
                     updateAudioPlayerVolume();
         
                     // IndexedDBに保存
-                    saveVolumeToDB(currentSong, value);
+                    saveVolumeToDB(songtitle, value);
         
                     // プレイリスト内のスライダーを更新
                     syncPlaylistVolumeControls(currentSong, value);
@@ -793,9 +763,9 @@ addEventListener('keydown', (e) => {
             globalVolumeNumber.value = (globalVolume * 100).toFixed(0);
             globalVolumeSlider.value = globalVolume;
             updateAudioPlayerVolume(); // 音量を反映
-
-            saveGlobalVolumeToDB(globalVolume); // IndexedDB に保存
-
+        
+            // IndexedDBに保存
+            localStorage.setItem('globalVolume', globalVolume);
             e.preventDefault();
         }else if(presskey.has("arrowdown") && !presskey.has("control")) {
             globalVolume = presskey.has("shift") ? globalVolume - Number(0.1) : globalVolume - Number(0.01) ;
@@ -805,9 +775,9 @@ addEventListener('keydown', (e) => {
             globalVolumeNumber.value = (globalVolume * 100).toFixed(0);
             globalVolumeSlider.value = globalVolume;
             updateAudioPlayerVolume(); // 音量を反映
-            
-            saveGlobalVolumeToDB(globalVolume); // IndexedDB に保存
-
+        
+            // IndexedDBに保存
+            localStorage.setItem('globalVolume', globalVolume);
             e.preventDefault();
         }else if(presskey.has('h')){
             if (modal.style.display==='flex'){
@@ -840,56 +810,56 @@ document.addEventListener('keyup', (e) => {
 
 // ファビコンを動的に変更する関数
 function setFavicon(base64Data) {
-  const favicon = document.getElementById("favicon");
-  if (favicon) {
-    favicon.href = base64Data;
-  }
-}
-
-// タイトルとファビコンを動的に変更
-audioPlayer.addEventListener("play", () => {
-  setFavicon(favicons.play); // 再生中アイコンに変更
-  let lastTime = Date.now();
-  let count = 0;
-  document.title = "再生中";
-
-  function updateTitle() {
-    const now = Date.now();
-    if (audioPlayer.paused) return; // 再生が停止したら終了
-    if (now - lastTime >= 3000) {
-      count++;
-      document.title = count % 2 === 0 ? "再生中" : songtitle;
-      lastTime = now;
+    const favicon = document.getElementById("favicon");
+    if (favicon) {
+      favicon.href = base64Data;
     }
-    setTimeout(updateTitle, 100);
   }
-  updateTitle();
-});
-
-audioPlayer.addEventListener("pause", () => {
-  setFavicon(favicons.pause); // 一時停止アイコンに変更
-  let lastTime = Date.now();
-  let count = 0;
-  document.title = "一時停止中";
-
-  function updateTitle() {
-    const now = Date.now();
-    if (!audioPlayer.paused) return; // 再生が開始したら終了
-    if (now - lastTime >= 3000) {
-      count++;
-      document.title = count % 2 === 0 ? "一時停止中" : songtitle;
-      lastTime = now;
+  
+  // タイトルとファビコンを動的に変更
+  audioPlayer.addEventListener("play", () => {
+    setFavicon(favicons.play); // 再生中アイコンに変更
+    let lastTime = Date.now();
+    let count = 0;
+    document.title = "再生中";
+  
+    function updateTitle() {
+      const now = Date.now();
+      if (audioPlayer.paused) return; // 再生が停止したら終了
+      if (now - lastTime >= 3000) {
+        count++;
+        document.title = count % 2 === 0 ? "再生中" : songtitle;
+        lastTime = now;
+      }
+      setTimeout(updateTitle, 100);
     }
-    setTimeout(updateTitle, 100);
-  }
-  updateTitle();
-});
-
-window.addEventListener("beforeunload", () => {
-    setTimeout(() => {
-        setFavicon(favicons.start); // 初期ファビコンに戻す
-      }, 100); // 100ms の遅延を設定
-});
+    updateTitle();
+  });
+  
+  audioPlayer.addEventListener("pause", () => {
+    setFavicon(favicons.pause); // 一時停止アイコンに変更
+    let lastTime = Date.now();
+    let count = 0;
+    document.title = "一時停止中";
+  
+    function updateTitle() {
+      const now = Date.now();
+      if (!audioPlayer.paused) return; // 再生が開始したら終了
+      if (now - lastTime >= 3000) {
+        count++;
+        document.title = count % 2 === 0 ? "一時停止中" : songtitle;
+        lastTime = now;
+      }
+      setTimeout(updateTitle, 100);
+    }
+    updateTitle();
+  });
+  
+  window.addEventListener("beforeunload", () => {
+      setTimeout(() => {
+          setFavicon(favicons.start); // 初期ファビコンに戻す
+        }, 100); // 100ms の遅延を設定
+  });
 //-------------------------------------------------------------------------
 
 
